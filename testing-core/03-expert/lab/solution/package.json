@@ -1,0 +1,8 @@
+{
+  "name": "ats-expert-lab-novashop",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/*.test.js pact/*.test.js"
+  }
+}

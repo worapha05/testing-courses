@@ -1,0 +1,58 @@
+name: novashop-quality-gates
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  fast-feedback:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install
+        run: npm ci
+      - name: Unit / POM / Contract
+        run: npm test
+
+  smoke-e2e:
+    runs-on: ubuntu-latest
+    needs: fast-feedback
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Smoke journeys
+        run: npm test -- tests/checkout.journey.test.js
+      - name: Upload traces on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: smoke-artifacts
+          path: |
+            **/trace.zip
+            **/report/**
+
+  sast-overview:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: SAST placeholder
+        run: echo "Wire Semgrep/CodeQL; fail on high severity"
+
+  perf-on-main:
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    needs: smoke-e2e
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run k6 smoke
+        env:
+          BASE_URL: ${{ secrets.STAGING_BASE_URL }}
+        run: |
+          echo "Install k6 then: k6 run k6/checkout_smoke.js"
+          echo "Gate: thresholds error<1% and p95<500ms"

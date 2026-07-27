@@ -1,0 +1,8 @@
+{
+  "name": "ats-intermediate-bdd",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node run-bdd.js"
+  }
+}

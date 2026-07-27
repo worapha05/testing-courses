@@ -1,0 +1,9 @@
+{
+  "name": "ats-expert-flakiness",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test stable.good.test.js",
+    "test:bad": "node --test flaky.bad.test.js"
+  }
+}

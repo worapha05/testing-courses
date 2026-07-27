@@ -1,0 +1,8 @@
+{
+  "name": "ats-expert-contract-pact",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test consumer/consumer.contract.test.js provider/provider.verify.test.js"
+  }
+}
