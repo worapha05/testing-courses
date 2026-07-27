@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "jsx": "react-jsx",
+    "strict": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "isolatedModules": true,
+    "resolveJsonModule": true,
+    "types": ["vite/client", "jest", "@testing-library/jest-dom"]
+  },
+  "include": [
+    "global.d.ts",
+    "01-beginner/**/*.ts",
+    "01-beginner/**/*.tsx",
+    "02-intermediate/**/*.ts",
+    "02-intermediate/**/*.tsx",
+    "03-expert/**/*.ts",
+    "03-expert/**/*.tsx"
+  ],
+  "exclude": ["node_modules", "**/dist/**", "**/coverage/**"]
+}

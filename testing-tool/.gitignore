@@ -1,0 +1,53 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+build/
+*.tsbuildinfo
+
+# Coverage reports
+coverage/
+.nyc_output/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Test artifacts
+playwright-report/
+test-results/
+allure-results/
+
+# Cypress
+cypress/screenshots/
+cypress/videos/
+cypress/downloads/
+
+# Pact
+pact/pacts/
+
+# Lock files (keep only in root if needed)
+package-lock.json
+yarn.lock
+pnpm-lock.yaml

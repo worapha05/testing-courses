@@ -1,0 +1,37 @@
+body {
+  margin: 0;
+  font-family: 'Source Sans 3', 'Segoe UI', sans-serif;
+  background: #0f172a;
+  color: #e2e8f0;
+}
+
+main {
+  max-width: 28rem;
+  margin: 3rem auto;
+  padding: 1.5rem;
+}
+
+label {
+  display: block;
+  margin-top: 0.75rem;
+}
+
+input {
+  width: 100%;
+  padding: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+button {
+  margin-top: 1rem;
+  padding: 0.55rem 1rem;
+  background: #38bdf8;
+  border: 0;
+  color: #0f172a;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+[role='alert'] {
+  color: #fda4af;
+}

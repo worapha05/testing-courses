@@ -1,0 +1,12 @@
+{
+  "adminProfile": {
+    "email": "admin@corp.test",
+    "role": "admin",
+    "permissions": ["read", "write", "billing"]
+  },
+  "memberProfile": {
+    "email": "member@corp.test",
+    "role": "member",
+    "permissions": ["read"]
+  }
+}

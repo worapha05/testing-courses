@@ -1,0 +1,52 @@
+pipeline {
+  agent any
+
+  tools {
+    nodejs '20'
+  }
+
+  stages {
+    stage('Install') {
+      steps {
+        dir('tooling-testing-bootcamp') {
+          sh 'npm ci'
+        }
+      }
+    }
+
+    stage('Unit & Integration') {
+      steps {
+        dir('tooling-testing-bootcamp') {
+          sh 'npm run test:beginner'
+          sh 'npm run test:intermediate'
+        }
+      }
+    }
+
+    stage('Build') {
+      steps {
+        dir('tooling-testing-bootcamp') {
+          sh 'npx vite build --config 03-expert/examples/01-cypress-e2e/vite.config.ts'
+        }
+      }
+    }
+
+    stage('E2E') {
+      steps {
+        dir('tooling-testing-bootcamp') {
+          sh '''
+            npx vite preview --config 03-expert/examples/01-cypress-e2e/vite.config.ts --port 5173 &
+            npx wait-on http://127.0.0.1:5173
+            npx cypress run --config-file 03-expert/examples/01-cypress-e2e/cypress.config.ts
+          '''
+        }
+      }
+    }
+  }
+
+  post {
+    always {
+      archiveArtifacts artifacts: 'tooling-testing-bootcamp/**/cypress/screenshots/**', allowEmptyArchive: true
+    }
+  }
+}

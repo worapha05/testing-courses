@@ -1,0 +1,59 @@
+name: Tooling & Testing CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: tooling-testing-bootcamp/package-lock.json
+
+      - name: Install
+        working-directory: tooling-testing-bootcamp
+        run: npm ci
+
+      - name: Unit tests (Beginner)
+        working-directory: tooling-testing-bootcamp
+        run: npm run test:beginner -- --coverage
+
+      - name: Integration tests (Intermediate)
+        working-directory: tooling-testing-bootcamp
+        run: npm run test:intermediate
+
+      - name: Build Vite demo app
+        working-directory: tooling-testing-bootcamp
+        run: npx vite build --config 03-expert/examples/01-cypress-e2e/vite.config.ts
+
+      - name: Cypress E2E (headless)
+        working-directory: tooling-testing-bootcamp
+        run: |
+          npx vite preview --config 03-expert/examples/01-cypress-e2e/vite.config.ts --host 127.0.0.1 --port 5173 &
+          npx wait-on http://127.0.0.1:5173
+          npx cypress run --config-file 03-expert/examples/01-cypress-e2e/cypress.config.ts
+
+      - name: Upload Cypress artifacts on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-artifacts
+          path: |
+            tooling-testing-bootcamp/03-expert/examples/01-cypress-e2e/cypress/screenshots
+            tooling-testing-bootcamp/03-expert/examples/01-cypress-e2e/cypress/videos
+          if-no-files-found: ignore

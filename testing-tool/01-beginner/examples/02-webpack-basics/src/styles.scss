@@ -1,0 +1,24 @@
+$brand: #0f766e;
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: linear-gradient(160deg, #ecfdf5, #ccfbf1 50%, #99f6e4);
+  min-height: 100vh;
+}
+
+.hero {
+  padding: 3rem 1.5rem;
+  max-width: 40rem;
+
+  h1 {
+    color: $brand;
+    letter-spacing: -0.02em;
+  }
+
+  code {
+    background: rgba(15, 118, 110, 0.12);
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+  }
+}

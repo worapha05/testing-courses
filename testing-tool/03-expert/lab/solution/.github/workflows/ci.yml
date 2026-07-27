@@ -1,0 +1,48 @@
+name: ForgeGate CI
+
+on:
+  pull_request:
+  push:
+    branches: [main, master]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: tooling-testing-bootcamp
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: tooling-testing-bootcamp/package-lock.json
+
+      - run: npm ci
+
+      - name: Unit + coverage gate
+        run: npx jest --config 03-expert/lab/solution/jest.coverage.config.cjs
+
+      - name: Beginner + Intermediate suites
+        run: |
+          npm run test:beginner
+          npm run test:intermediate
+
+      - name: Build ForgeGate
+        run: npx vite build --config 03-expert/lab/solution/vite.config.ts
+
+      - name: Cypress headless
+        run: |
+          npx vite preview --config 03-expert/lab/solution/vite.config.ts --host 127.0.0.1 --port 5176 &
+          npx wait-on http://127.0.0.1:5176
+          npx cypress run --config-file 03-expert/lab/solution/cypress.config.ts
+
+      - if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: forgegate-cypress
+          path: tooling-testing-bootcamp/03-expert/lab/solution/cypress/screenshots
+          if-no-files-found: ignore
